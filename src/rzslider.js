@@ -251,6 +251,14 @@
        */
       this.valueRange = 0;
 
+
+      /**
+       * If showTicks/showTicksValues options are number.
+       * In this case, ticks values should be displayed below the slider.
+       * @type {boolean}
+       */
+      this.intermediateTicks = false;
+
       /**
        * Set to true if init method already executed
        *
@@ -420,6 +428,8 @@
 
         this.options.showTicks = this.options.showTicks || this.options.showTicksValues;
         this.scope.showTicks = this.options.showTicks; //scope is used in the template
+        if(angular.isNumber(this.options.showTicks))
+          this.intermediateTicks = true;
 
         this.options.showSelectionBar = this.options.showSelectionBar || this.options.showSelectionBarEnd
           || this.options.showSelectionBarFromValue !== null;
@@ -534,11 +544,14 @@
         else
           this.maxH.css('display', '');
 
+
         this.alwaysHide(this.flrLab, this.options.showTicksValues || this.options.hideLimitLabels);
         this.alwaysHide(this.ceilLab, this.options.showTicksValues || this.options.hideLimitLabels);
-        this.alwaysHide(this.minLab, this.options.showTicksValues || this.options.hidePointerLabels);
-        this.alwaysHide(this.maxLab, this.options.showTicksValues || !this.range || this.options.hidePointerLabels);
-        this.alwaysHide(this.cmbLab, this.options.showTicksValues || !this.range || this.options.hidePointerLabels);
+
+        var hideLabelsForTicks = this.options.showTicksValues && !this.intermediateTicks;
+        this.alwaysHide(this.minLab, hideLabelsForTicks || this.options.hidePointerLabels);
+        this.alwaysHide(this.maxLab, hideLabelsForTicks || !this.range || this.options.hidePointerLabels);
+        this.alwaysHide(this.cmbLab, hideLabelsForTicks || !this.range || this.options.hidePointerLabels);
         this.alwaysHide(this.selBar, !this.range && !this.options.showSelectionBar);
 
         if (this.options.vertical)
@@ -548,6 +561,9 @@
           this.selBar.addClass('rz-draggable');
         else
           this.selBar.removeClass('rz-draggable');
+
+        if(this.intermediateTicks && this.options.showTicksValues)
+          this.ticks.addClass('rz-ticks-values-under');
       },
 
       alwaysHide: function(el, hide) {
@@ -756,7 +772,7 @@
       updateTicksScale: function() {
         if (!this.options.showTicks) return;
         var step = this.step;
-        if(angular.isNumber(this.options.showTicks))
+        if(this.intermediateTicks)
           step = this.options.showTicks;
         var ticksCount = Math.round((this.maxValue - this.minValue) / step) + 1;
         this.scope.ticks = [];
