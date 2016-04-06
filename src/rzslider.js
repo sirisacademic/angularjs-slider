@@ -36,6 +36,7 @@
       step: 1,
       precision: 0,
       minRange: 0,
+      maxRange: 0,
       id: null,
       translate: null,
       stepsArray: null,
@@ -1699,11 +1700,11 @@
         var valueChanged = false;
 
         if (this.range) {
-          newValue = this.applyMinRange(newValue);
+          newValue = this.applyRanges(newValue);          
           /* This is to check if we need to switch the min and max handles */
           if (this.tracking === 'rzSliderModel' && newValue > this.scope.rzSliderHigh) {
             if (this.options.noSwitching && this.scope.rzSliderHigh !== this.minValue) {
-              newValue = this.applyMinRange(this.scope.rzSliderHigh);
+              newValue = this.applyRanges(newValue);
             }
             else {
               this.scope[this.tracking] = this.scope.rzSliderHigh;
@@ -1718,7 +1719,7 @@
             valueChanged = true;
           } else if (this.tracking === 'rzSliderHigh' && newValue < this.scope.rzSliderModel) {
             if (this.options.noSwitching && this.scope.rzSliderModel !== this.maxValue) {
-              newValue = this.applyMinRange(this.scope.rzSliderModel);
+              newValue = this.applyRanges(newValue);
             }
             else {
               this.scope[this.tracking] = this.scope.rzSliderModel;
@@ -1745,6 +1746,17 @@
           this.applyModel();
       },
 
+      applyRanges: function(newValue) {
+
+        //minimal validation
+        if(this.options.minRange > this.options.maxRange)
+          return newValue;
+        
+        //both min range and max ranges can be combined,
+        //but order it's important. First max and the min
+        return this.applyMinRange(this.applyMaxRange(newValue));
+      },
+
       applyMinRange: function(newValue) {
         if (this.options.minRange !== 0) {
           var oppositeValue = this.tracking === 'rzSliderModel' ? this.scope.rzSliderHigh : this.scope.rzSliderModel,
@@ -1755,6 +1767,21 @@
               return this.scope.rzSliderHigh - this.options.minRange;
             else
               return this.scope.rzSliderModel + this.options.minRange;
+          }
+        }
+        return newValue;
+      },
+
+      applyMaxRange: function(newValue) {
+        if (this.options.maxRange !== 0) {
+          var oppositeValue = this.tracking === 'rzSliderModel' ? this.scope.rzSliderHigh : this.scope.rzSliderModel,
+            difference = Math.abs(newValue - oppositeValue);
+
+          if (difference > this.options.maxRange) {
+            if (this.tracking === 'rzSliderModel')
+              return this.scope.rzSliderHigh - this.options.maxRange;
+            else
+              return this.scope.rzSliderModel + this.options.maxRange;
           }
         }
         return newValue;

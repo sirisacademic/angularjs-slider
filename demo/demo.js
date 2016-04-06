@@ -25,7 +25,35 @@ app.controller('MainCtrl', function($scope, $rootScope, $timeout, $modal) {
       floor: 0,
       ceil: 100,
       step: 1,
-      minRange: 10
+      minRange: 10,
+      draggableRange: true,
+    }
+  };
+
+  //Range slider with maxRange config
+  $scope.maxRangeSlider = {
+    minValue: 10,
+    maxValue: 30,
+    options: {
+      floor: 0,
+      ceil: 100,
+      step: 1,
+      maxRange: 50,
+      draggableRange: true
+    }
+  };
+
+  //Range slider with maxRange config
+  $scope.minmaxRangeSlider = {
+    minValue: 10,
+    maxValue: 30,
+    options: {
+      floor: 0,
+      ceil: 100,
+      step: 1,
+      minRange: 10,
+      maxRange: 50,
+      draggableRange: true
     }
   };
 
