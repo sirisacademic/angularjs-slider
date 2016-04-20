@@ -1871,6 +1871,22 @@
         return attrs.rzSliderTplUrl || 'rzSliderTpl.html';
       },
 
+      controller : function ($scope, $element, $attrs, $transclude)
+      {
+        this.getScope = function()
+        {
+          return $scope;
+        }
+
+        //remove the element from the DOM and also detroy the scope so this directive
+        //is not in memory anymore (no listeners, no etc..)
+        $scope.destroy = function()
+        {
+          $element.remove();
+          $scope.$destroy();
+        }
+      },
+
       link: function(scope, elem) {
         scope.slider = new RzSlider(scope, elem); //attach on scope so we can test it
       }

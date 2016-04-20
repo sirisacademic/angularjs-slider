@@ -1,7 +1,7 @@
 /*! angularjs-slider - v2.11.0 - 
  (c) Rafal Zajac <rzajac@gmail.com>, Valentin Hervieu <valentin@hervieu.me>, Jussi Saarivirta <jusasi@gmail.com>, Angelin Sirbu <angelin.sirbu@gmail.com> - 
  https://github.com/angular-slider/angularjs-slider - 
- 2016-04-06 */
+ 2016-04-20 */
 /*jslint unparam: true */
 /*global angular: false, console: false, define, module */
 (function(root, factory) {
@@ -1866,6 +1866,22 @@
         //noinspection JSUnresolvedVariable
         return attrs.rzSliderTplUrl || 'rzSliderTpl.html';
       },
+
+      controller : ['$scope', '$element', '$attrs', '$transclude', function ($scope, $element, $attrs, $transclude)
+      {
+        this.getScope = function()
+        {
+          return $scope;
+        }
+
+        //remove the element from the DOM and also detroy the scope so this directive
+        //is not in memory anymore (no listeners, no etc..)
+        $scope.destroy = function()
+        {
+          $element.remove();
+          $scope.$destroy();
+        }
+      }],
 
       link: function(scope, elem) {
         scope.slider = new RzSlider(scope, elem); //attach on scope so we can test it
