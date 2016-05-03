@@ -1,7 +1,7 @@
 /*! angularjs-slider - v2.11.0 - 
  (c) Rafal Zajac <rzajac@gmail.com>, Valentin Hervieu <valentin@hervieu.me>, Jussi Saarivirta <jusasi@gmail.com>, Angelin Sirbu <angelin.sirbu@gmail.com> - 
  https://github.com/angular-slider/angularjs-slider - 
- 2016-04-20 */
+ 2016-05-03 */
 rzslider {
   position: relative;
   display: inline-block;
@@ -63,7 +63,7 @@ rzslider .rz-bar {
 
 rzslider .rz-bar.rz-selection {
   z-index: 2;
-  background: #0db9f0;
+  background: #1daaf3;
   -webkit-border-radius: 2px;
      -moz-border-radius: 2px;
           border-radius: 2px;
@@ -75,7 +75,7 @@ rzslider .rz-pointer {
   width: 16px;
   height: 16px;
   cursor: pointer;
-  background-color: #0db9f0;
+  background-color: #1daaf3;
   -webkit-border-radius: 8px;
      -moz-border-radius: 8px;
           border-radius: 8px;
@@ -150,7 +150,7 @@ rzslider .rz-ticks .rz-tick {
 }
 
 rzslider .rz-ticks .rz-tick.rz-selected {
-  background: #0db9f0;
+  background: #1daaf3;
 }
 
 rzslider .rz-ticks .rz-tick .rz-tick-value {
